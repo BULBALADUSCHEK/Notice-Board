@@ -1,0 +1,31 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <%= link_to "Notice Board", root_path, class: "navbar-brand", id: "logo" %>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    
+    
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <%= link_to "Relevant", articles_path, class: "nav-link" %>
+        </li>
+
+        <li class="nav-item">
+          <%= link_to "Expired", expired_path, class: "nav-link" %>
+        </li>
+
+        <li class="nav-item">
+          <%= link_to "Closed", close_path, class: "nav-link" %>
+        </li>
+
+        
+
+        <form class="form-inline my-2 my-lg-0">  
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
+          <%= link_to "Create", new_article_path, class: "link" %></button>   
+          </form>
+  
+  </div>
+</nav>
+
