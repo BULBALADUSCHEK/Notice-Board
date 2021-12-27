@@ -8,16 +8,34 @@
         by User_1
         </div>
         <div class="card-body">              
-          <div class="card-text text-left"><%= simple_format(@article.description) %></div>
-          <a href="#" class="btn btn-outline-success">Comment</a>          
+          <div class="card-text text-left"><%= simple_format(@article.description) %></div>             
           <%= link_to "Edit", edit_article_path(@article), class: "btn btn-outline-info" %>
           <a href="#" class="btn btn-outline-danger">Close</a>  
           </div> 
          <div class="card-footer text-muted">
-            <small>Expired at: <%= time_ago_in_words(@article.created_at) %> ago, 
+            <small>Expired at: <%= @article.expiration_date %>, , 
             edited <%= time_ago_in_words(@article.updated_at) %> ago</small>
-          </div>
+          </div>       
         </div>
+
+        <hr>
+        <h2>All comments</h2>
+        <% @article.comments.each do |comment| %>
+        <div class="alert alert-light">
+        <p><strong><% comment.description %></strong></p>
+        </div>
+        <% end %>
+        
+        <h2>Comments</h2>
+        <%= form_for([@article, @article.comments.build]) do |f| %>
+        <p>
+        Description<br>
+        <%= f.text_area(:description, {:class => 'form-comtrol'}) %>
+        </p>
+        <%= f.submit "Submit", :class => 'btn btn-outline-light btn-lg' %>   
+        <% end %>
+
+      
       </div>
     </div>
 </div>

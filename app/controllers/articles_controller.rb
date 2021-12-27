@@ -1,11 +1,12 @@
 class ArticlesController < ApplicationController
-    before_action :set_article, only: [:show, :edit, :update, :destroy]
+    before_action :set_article, only: [:show, :edit, :update]
+    #after_create :expiration_date
 
     def show
     end
 
     def index
-      @articles = Article.all
+      @articles = Article.relevant
     end
     
     def new
@@ -34,6 +35,15 @@ class ArticlesController < ApplicationController
       end
     end
 
+  
+    def expiration_date
+      if !@article.expiration_date.nil? && @article.expiration_date > DateTime.now
+        redirect_to @article
+      else
+        redirect_to expired_path
+      end
+    end
+
     private
 
     def set_article
@@ -41,7 +51,7 @@ class ArticlesController < ApplicationController
     end
 
     def article_params
-      params.require(:article).permit(:title, :description)
+      params.require(:article).permit(:title, :description, :status, :expiration_date)
     end
 
 end
