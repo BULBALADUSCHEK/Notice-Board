@@ -40,7 +40,7 @@ class ArticlesController < ApplicationController
       if !@article.expiration_date.nil? && @article.expiration_date > DateTime.now
         redirect_to @article
       else
-        redirect_to expired_path
+        render 'new'
       end
     end
 
