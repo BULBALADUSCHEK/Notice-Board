@@ -1,7 +1,6 @@
 class ArticlesController < ApplicationController
     before_action :set_article, only: [:show, :edit, :update]
-    #after_create :expiration_date
-
+   
     def show
     end
 
@@ -35,14 +34,13 @@ class ArticlesController < ApplicationController
       end
     end
 
-  
-    def expiration_date
-      if !@article.expiration_date.nil? && @article.expiration_date > DateTime.now
-        redirect_to @article
-      else
-        render 'new'
-      end
-    end
+
+    # def update_state
+    #   @articles.each do |article|
+    #   article.check_state
+    #   end
+    # end
+
 
     private
 
@@ -51,7 +49,7 @@ class ArticlesController < ApplicationController
     end
 
     def article_params
-      params.require(:article).permit(:title, :description, :status, :expiration_date)
+      params.require(:article).permit(:title, :description, :expiration_date)
     end
 
 end
