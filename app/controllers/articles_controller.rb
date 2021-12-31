@@ -34,14 +34,13 @@ class ArticlesController < ApplicationController
       end
     end
 
+    def change_state
+      @article = Articles.find(params[:id])
+      @article.update(state: params[:state])
+      redirect_to @article
+    end
 
-    # def update_state
-    #   @articles.each do |article|
-    #   article.check_state
-    #   end
-    # end
-
-
+  
     private
 
     def set_article

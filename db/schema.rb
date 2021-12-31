@@ -45,9 +45,8 @@ ActiveRecord::Schema.define(version: 2021_12_29_150109) do
     t.text "description"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.string "status"
     t.datetime "expiration_date"
-    t.integer "state"
+    t.integer "state", default: 0
   end
 
   create_table "comments", force: :cascade do |t|

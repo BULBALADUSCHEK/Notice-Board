@@ -3,7 +3,10 @@ Rails.application.routes.draw do
   get 'close', to: 'pages#close'
   get 'expired', to: 'pages#expired'
   get 'main', to: 'pages#main'
+  
   resources :articles do
-  resources :comments
-  end 
+    resources :comments     
+    patch :change_state  
+  end
+
 end

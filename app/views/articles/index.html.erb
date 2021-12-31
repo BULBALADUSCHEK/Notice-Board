@@ -6,14 +6,15 @@
         <div class="card text-center shadow mb-5 bg-white rounded">
           <div class="card-header font-italic">
           by User_1
-          <p>State:<%= article.state %></p>
+          <p>State: <%= article.state %></p>
           </div>
             <div class="card-body">
               <h5 class="card-title"><%= link_to article.title, article_path(article), class: "text-success" %></h5>        
                 <p class="card-text"><%= article.description %></p>                
                 <%= link_to "Comment", article_path(article), class: "btn btn-outline-info" %>                     
                 <%= link_to "Edit", edit_article_path(article), class: "btn btn-outline-info" %>
-                  <%= link_to "Close", close_path(article), class: "btn btn-outline-danger" %> 
+                  <%= link_to "Close", article_change_state_path(article, {state: 2}), method: :patch, class: "btn btn-outline-danger" %> 
+                  
             </div>
                 <div class="card-footer text-muted">
                   <small>Expired at: <%= article.expiration_date %>, 
