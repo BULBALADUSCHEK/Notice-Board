@@ -1,11 +1,17 @@
 class ArticlesController < ApplicationController
     before_action :set_article, only: [:show, :edit, :update]
    
+  #   def index
+  #     @relevant_articles = Article.get_by_state("Relevant")
+  #     @expired_articles = Article.get_by_state("Expired")
+  #     @closed_articles = Article.get_by_state("Closed")
+  # end
+
     def show
     end
 
     def index
-      @articles = Article.relevant
+      @articles = Article.paginate(page: params[:page], per_page: 5)
     end
     
     def new
@@ -25,7 +31,8 @@ class ArticlesController < ApplicationController
     end
 
     def create
-      @article = Article.new(article_params)       
+      @article = Article.new(article_params)    
+      @article.user = User.first
       if @article.save
         flash[:notice] = "Advertisement was created successfully."
         redirect_to @article
@@ -35,11 +42,16 @@ class ArticlesController < ApplicationController
     end
 
     def change_state
-      @article = Articles.find(params[:id])
-      @article.update(state: params[:state])
+      @article = Article.find(params[:article_id])
+      @article.update(state: params[:state].to_i)
       redirect_to @article
     end
 
+  def article_by_state(state)
+      self.articles.select do |article|
+          article.state == state
+      end
+  end
   
     private
 
