@@ -12,13 +12,15 @@
           <div class="card-body">
             <h5 class="card-title"><%= link_to article.title, article_path(article), class: "text-success" %></h5>        
               <p class="card-text"><%= article.description %></p>                
-              <%= link_to "Comment", article_path(article), class: "btn btn-outline-info" %>                     
+              <%= link_to "Comment", article_path(article), class: "btn btn-outline-info" %>
+              <% if logged_in? && (article.user == current_user || current_user.admin?) %>                     
               <%= link_to "Edit", edit_article_path(article), class: "btn btn-outline-info" %>
                 <%# <%= link_to "Close", article_change_state_path(article, {state: 2}), method: :patch, class: "btn btn-outline-danger" %> 
                 
               <%= button_to "Close",
                   article_change_state_path(article),
                   method: :patch, params: {state: 2} %>
+              <% end %>
           </div>
               <div class="card-footer text-muted">
                 <small>Expired at: <%= article.expiration_date %>, 

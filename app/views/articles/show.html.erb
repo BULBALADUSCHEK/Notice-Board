@@ -8,14 +8,15 @@
         <p>State: <%= @article.state %></p>
         </div>
         <div class="card-body">              
-          <div class="card-text text-left"><%= simple_format(@article.description) %></div>             
+          <div class="card-text text-left"><%= simple_format(@article.description) %></div>      
+          <% if logged_in? && (@article.user == current_user || current_user.admin?) %>
           <%= link_to "Edit", edit_article_path(@article), class: "btn btn-outline-info" %> 
           <%= button_to "Close",
               article_change_state_path(@article),
               method: :patch, params: {state: 2} %>
-
-          </div> 
-         <div class="card-footer text-muted">
+          <% end %>
+        </div> 
+        <div class="card-footer text-muted">
             <small>Expired at: <%= @article.expiration_date %>,
             edited <%= time_ago_in_words(@article.updated_at) %> ago</small>
           </div>       
@@ -27,9 +28,8 @@
         <div class="alert alert-light">
         <p><strong><%= comment.description %></strong></p>
         </div>
-        <% end %>
+        <% end %>        
         
-        <h2>Comments</h2>
         <%= form_for([@article, @article.comments.build]) do |f| %>
         <p>
         Description<br>
