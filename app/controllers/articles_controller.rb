@@ -1,11 +1,19 @@
 class ArticlesController < ApplicationController
-    before_action :set_article, only: [:show, :edit, :update, :destroy]
+    before_action :set_article, only: [:show, :edit, :update]
+    before_action :require_user, except: [:show, :index]
+    before_action :require_same_user, only: [:edit, :update, :destroy]
+
+  #   def index
+  #     @relevant_articles = Article.get_by_state("Relevant")
+  #     @expired_articles = Article.get_by_state("Expired")
+  #     @closed_articles = Article.get_by_state("Closed")
+  # end
 
     def show
     end
 
     def index
-      @articles = Article.all
+      @articles = Article.paginate(page: params[:page], per_page: 5)
     end
     
     def new
@@ -25,7 +33,8 @@ class ArticlesController < ApplicationController
     end
 
     def create
-      @article = Article.new(article_params)       
+      @article = Article.new(article_params)    
+      @article.user = current_user
       if @article.save
         flash[:notice] = "Advertisement was created successfully."
         redirect_to @article
@@ -34,6 +43,18 @@ class ArticlesController < ApplicationController
       end
     end
 
+    def change_state
+      @article = Article.find(params[:article_id])
+      @article.update(state: params[:state].to_i)
+      redirect_to @article
+    end
+
+  def article_by_state(state)
+      self.articles.select do |article|
+          article.state == state
+      end
+  end
+  
     private
 
     def set_article
@@ -41,7 +62,14 @@ class ArticlesController < ApplicationController
     end
 
     def article_params
-      params.require(:article).permit(:title, :description)
+      params.require(:article).permit(:title, :description, :expiration_date)
+    end
+
+    def require_same_user
+      if current_user != @article.user && !current_user.admin?
+        flash[:alert] = "Only the owner of a ad can edit or delete a ad"
+        redirect_to @article
+      end
     end
 
 end

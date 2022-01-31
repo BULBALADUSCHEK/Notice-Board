@@ -1,23 +1,42 @@
 <h2 class="text-center mt-4"><%= @article.title %></h2>
-
   <div class="container">
   <div class="row justify-content-md-center">
     <div class="col-8 mt-4">
       <div class="card text-center shadow mb-5 bg-white rounded">
       <div class="card-header font-italic">
-        by User_1
+        by <%= @article.user.username if @article.user %>
+        <p>State: <%= @article.state %></p>
         </div>
         <div class="card-body">              
-          <div class="card-text text-left"><%= simple_format(@article.description) %></div>
-          <a href="#" class="btn btn-outline-success">Comment</a>          
-          <%= link_to "Edit", edit_article_path(@article), class: "btn btn-outline-info" %>
-          <a href="#" class="btn btn-outline-danger">Close</a>  
-          </div> 
-         <div class="card-footer text-muted">
-            <small>Expired at: <%= time_ago_in_words(@article.created_at) %> ago, 
+          <div class="card-text text-left"><%= simple_format(@article.description) %></div>      
+          <% if logged_in? && (@article.user == current_user || current_user.admin?) %>
+          <%= link_to "Edit", edit_article_path(@article), class: "btn btn-outline-info" %> 
+          <%= button_to "Close",
+              article_change_state_path(@article),
+              method: :patch, params: {state: 2} %>
+          <% end %>
+        </div> 
+        <div class="card-footer text-muted">
+            <small>Expired at: <%= @article.expiration_date %>,
             edited <%= time_ago_in_words(@article.updated_at) %> ago</small>
-          </div>
+          </div>       
         </div>
+
+        <hr>
+        <h2>All comments</h2>
+        <% @article.comments.each do |comment| %>
+        <div class="alert alert-light">
+        <p><strong><%= comment.description %></strong></p>
+        </div>
+        <% end %>        
+        
+        <%= form_for([@article, @article.comments.build]) do |f| %>
+        <p>
+        Description<br>
+        <%= f.text_area(:description, {:class => 'form-comtrol'}) %>
+        </p>
+        <%= f.submit "Submit", :class => 'btn btn-outline-light btn-lg' %>   
+        <% end %>      
       </div>
     </div>
 </div>

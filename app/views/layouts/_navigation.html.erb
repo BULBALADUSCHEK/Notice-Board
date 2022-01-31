@@ -7,6 +7,11 @@
     
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
+
+        <li class="nav-item active">
+          <%= link_to "Users", users_path, class: "nav-link" %>
+        </li>
+
         <li class="nav-item active">
           <%= link_to "Relevant", articles_path, class: "nav-link" %>
         </li>
@@ -19,12 +24,34 @@
           <%= link_to "Closed", close_path, class: "nav-link" %>
         </li>
 
+        <!-- Autorization starts -->
         
+        <% if logged_in? %>
+          <li class="nav-item active">      
+          <%= "(Admin)" if current_user.admin? %>
+          <%= link_to current_user.username, user_path(current_user), class: "nav-link" %>
+          </li>
+          <li class="nav-item">
+            <%= link_to "Logout", logout_path, class: "nav-link", method: :delete %>
+          </li>
+        <% else %>
+          <li class="nav-item">
+            <%= link_to "Log in", login_path, class: "nav-link" %>
+          </li>
+          <li class="nav-item">
+            <%= link_to "Sign up", signup_path, class: "nav-link" %>
+          </li>
+        <% end %>
+      </ul>
 
+      <!-- Autorization ends -->
+      
+      <% if logged_in? %>
         <form class="form-inline my-2 my-lg-0">  
         <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
           <%= link_to "Create", new_article_path, class: "link" %></button>   
           </form>
+      <% end %>
   
   </div>
 </nav>
